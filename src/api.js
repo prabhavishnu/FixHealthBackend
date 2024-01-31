@@ -15,7 +15,7 @@ function randomIntFromInterval(min, max) {
 }
 
 // Define a route that responds with a JSON object when a GET request is made to the root path
-router.get("/", (req, res) => {
+router.get("/doctors", (req, res) => {
   const { city } = req.query;
   var maleDocCount = randomIntFromInterval(1, 5);
   var femaleDocCount = randomIntFromInterval(1, 5);
@@ -50,7 +50,7 @@ router.get("/", (req, res) => {
 });
 
 // Use the router to handle requests to the `/.netlify/functions/api` path
-app.use(`/`, router);
+app.use(`/.netlify/functions/api`, router);
 
 // Export the app and the serverless function
 module.exports = app;
