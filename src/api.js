@@ -1,19 +1,21 @@
-var express = require("express");
+const express = require("express");
+const serverless = require("serverless-http");
 var random_name = require("random-indian-name");
-var docData = require("./images.json");
+var docData = require("../images.json");
 var _ = require("lodash");
-var cors = require("cors");
 
-var app = express();
-app.use(cors());
+// Create an instance of the Express app
+const app = express();
 
-app.listen(3000, () => {
-  console.log("Server running on port 3000");
-});
+// Create a router to handle routes
+const router = express.Router();
+
 function randomIntFromInterval(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-app.get("/doctors", (req, res, next) => {
+
+// Define a route that responds with a JSON object when a GET request is made to the root path
+router.get("/", (req, res) => {
   const { city } = req.query;
   var maleDocCount = randomIntFromInterval(1, 5);
   var femaleDocCount = randomIntFromInterval(1, 5);
@@ -46,3 +48,10 @@ app.get("/doctors", (req, res, next) => {
   }
   res.json(doctorList);
 });
+
+// Use the router to handle requests to the `/.netlify/functions/api` path
+app.use(`/`, router);
+
+// Export the app and the serverless function
+module.exports = app;
+module.exports.handler = serverless(app);
