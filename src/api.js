@@ -3,6 +3,7 @@ const serverless = require("serverless-http");
 var random_name = require("random-indian-name");
 var docData = require("../images.json");
 var _ = require("lodash");
+var cors = require("cors");
 
 // Create an instance of the Express app
 const app = express();
@@ -48,7 +49,7 @@ router.get("/doctors", (req, res) => {
   }
   res.json(doctorList);
 });
-
+app.use(cors());
 // Use the router to handle requests to the `/.netlify/functions/api` path
 app.use(`/.netlify/functions/api`, router);
 
